@@ -15,11 +15,11 @@ export function N8nChat() {
         loadPreviousSession: true,
         showWelcomeScreen: false,
         initialMessages: [
-          "👋 Hola! Soy el asistente virtual Quesos don Leo para ayudarte."
+          "👋 Hola! Soy el asistente virtual de Quesos don Leo para ayudarte."
         ],
         i18n: {
           en: {
-            title: "Quesos Don Leo",
+            title: "COOCAM",
             subtitle: "Asistencia Virtual",
             inputPlaceholder: "Escribe aqui..",
           },
