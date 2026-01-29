@@ -14,7 +14,7 @@ export function Hero() {
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-foreground/70" />
+        <div className="absolute inset-0 bg-[oklch(0.28_0.08_295)]/70" />
       </div>
 
       {/* Content */}
@@ -37,21 +37,21 @@ export function Hero() {
             Queseria Don Nelson
           </h1>
           <p className="text-white/90 text-lg md:text-xl leading-relaxed mb-8 max-w-xl">
-            Quesos artesanales elaborados con la receta familiar que ha pasado de generacion en generacion. 
+            Quesos artesanales elaborados con la receta familiar que ha pasado de generacion en generacion.
             Del campo a tu mesa, con el sabor autentico de nuestra tierra chilena.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button 
-              asChild 
-              size="lg" 
+            <Button
+              asChild
+              size="lg"
               className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8"
             >
               <Link href="#productos">Ver Productos</Link>
             </Button>
-            <Button 
-              asChild 
-              size="lg" 
-              variant="outline" 
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
               className="border-white text-white hover:bg-white/10 text-base px-8 bg-transparent"
             >
               <Link href="#nosotros">Nuestra Historia</Link>

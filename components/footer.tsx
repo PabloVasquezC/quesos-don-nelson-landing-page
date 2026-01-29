@@ -4,7 +4,7 @@ import { Instagram, Facebook } from "lucide-react"
 
 export function Footer() {
   return (
-    <footer className="bg-foreground text-white py-16">
+    <footer className="bg-[oklch(0.28_0.08_295)] text-white py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-3 gap-12 mb-12">
           {/* Brand */}
@@ -23,7 +23,7 @@ export function Footer() {
               </div>
             </div>
             <p className="text-white/80 leading-relaxed">
-              Quesos artesanales elaborados con tradicion y pasion. 
+              Quesos artesanales elaborados con tradicion y pasion.
               Del campo a tu mesa con el mejor sabor chileno.
             </p>
           </div>
@@ -51,18 +51,18 @@ export function Footer() {
           <div>
             <h4 className="font-semibold text-white mb-4">Redes Sociales</h4>
             <div className="flex gap-4 mb-4">
-              <a 
-                href="https://www.instagram.com/quesosdonnelson/" 
-                target="_blank" 
+              <a
+                href="https://www.instagram.com/quesosdonnelson/"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
                 aria-label="Seguir en Instagram"
               >
                 <Instagram className="w-5 h-5" />
               </a>
-              <a 
-                href="https://www.facebook.com/quesosdonnelson/" 
-                target="_blank" 
+              <a
+                href="https://www.facebook.com/quesosdonnelson/"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
                 aria-label="Seguir en Facebook"
