@@ -5,6 +5,7 @@ import { About } from "@/components/about"
 import { Contact } from "@/components/contact"
 import { Footer } from "@/components/footer"
 import { FadeIn } from "@/components/animations/fade-in"
+import { N8nChat } from "@/components/N8n"
 
 export default function Home() {
   return (
@@ -26,6 +27,8 @@ export default function Home() {
         <FadeIn direction="up" duration={0.8}>
           <Contact />
         </FadeIn>
+        <N8nChat />
+
       </main>
       <Footer />
     </>
