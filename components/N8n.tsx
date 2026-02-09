@@ -19,7 +19,7 @@ export function N8nChat() {
         ],
         i18n: {
           en: {
-            title: "COOCAM",
+            title: "Quesos Don Nelson",
             subtitle: "Asistencia Virtual",
             inputPlaceholder: "Escribe aqui..",
           },
