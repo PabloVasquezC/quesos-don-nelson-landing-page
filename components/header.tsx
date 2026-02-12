@@ -7,7 +7,6 @@ import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { motion, AnimatePresence } from "framer-motion"
 
-import { ModeToggle } from "@/components/mode-toggle"
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -76,7 +75,6 @@ export function Header() {
 
           {/* CTA Button */}
           <div className="hidden md:flex items-center gap-4">
-            <ModeToggle />
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
                 <Link href="#contacto" onClick={(e) => handleScroll(e, "#contacto")}>Hacer Pedido</Link>
@@ -86,7 +84,6 @@ export function Header() {
 
           {/* Mobile Menu Button */}
           <div className="flex md:hidden items-center gap-4">
-            <ModeToggle />
             <button
               type="button"
               className="p-2 text-foreground"

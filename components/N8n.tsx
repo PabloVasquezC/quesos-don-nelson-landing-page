@@ -15,7 +15,7 @@ export function N8nChat() {
         loadPreviousSession: true,
         showWelcomeScreen: false,
         initialMessages: [
-          "👋 Hola! Soy el asistente virtual de Quesos don Nelson para ayudarte."
+          "👋 Hola! Soy el asistente virtual de Quesos don Nelson y estoy aquí para ayudarte."
         ],
         i18n: {
           en: {

@@ -17,7 +17,6 @@ export const metadata: Metadata = {
   },
 }
 
-import { ThemeProvider } from "@/components/theme-provider"
 
 export default function RootLayout({
   children,
@@ -27,15 +26,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`font-sans antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-          <Analytics />
-        </ThemeProvider>
+        {children}
+        <Analytics />
       </body>
     </html>
   )

@@ -77,9 +77,20 @@ export function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="border-t border-white/20 pt-8">
+        <div className="border-t border-white/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-center text-white/60 text-sm">
-            {new Date().getFullYear()} Queseria Don Nelson. Todos los derechos reservados.
+            &copy; {new Date().getFullYear()} Queseria Don Nelson. Todos los derechos reservados.
+          </p>
+          <p className="text-center text-white/60 text-sm flex items-center gap-1">
+            Desarrollado con <span className="text-red-500">♥</span> por{" "}
+            <a
+              href="https://fluxia.cl"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white hover:text-white/80 transition-colors underline decoration-white/30 hover:decoration-white/80"
+            >
+              Fluxia
+            </a>
           </p>
         </div>
       </div>
