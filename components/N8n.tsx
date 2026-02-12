@@ -8,7 +8,7 @@ export function N8nChat() {
     import("@n8n/chat").then(({ createChat }) => {
       createChat({
         webhookUrl:
-          "https://n8n.fluxia.cl/webhook/7e9cc031-39d2-4223-8fe1-0fd95fbc330f/chat",
+          "https://n8n.fluxia.cl/webhook/15a48a2f-3f5b-4f73-8378-75f8cd4f6a2e/chat",
         mode: "window",
         chatInputKey: "chatInput",
         chatSessionKey: "sessionId",
