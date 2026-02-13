@@ -22,6 +22,9 @@ export function N8nChat() {
             title: "Quesos Don Nelson",
             subtitle: "Asistencia Virtual",
             inputPlaceholder: "Escribe aqui..",
+            footer: "Quesos Don Nelson",
+            getStarted: "Comenzar",
+            closeButtonTooltip: "Cerrar",
           },
         },
       });
