@@ -1,19 +1,66 @@
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { client, queries, urlFor } from "@/lib/sanity"
 
-export function Hero() {
+interface HeroData {
+  tagline: string
+  title: string
+  description: string
+  backgroundVideo?: string
+  backgroundImage?: { asset?: { _ref: string } }
+  ctaButtons?: Array<{
+    label: string
+    href: string
+    variant: "primary" | "outline"
+  }>
+}
+
+export async function Hero() {
+  let data: HeroData | null = null
+
+  try {
+    data = await client.fetch<HeroData>(queries.hero)
+  } catch {
+    // Fallback a datos hardcodeados
+  }
+
+  const tagline = data?.tagline || "Queseria Artesanal Chilena"
+  const title = data?.title || "Queseria Don Nelson"
+  const description = data?.description || "Quesos artesanales elaborados con la receta familiar que ha pasado de generacion en generacion. Del campo a tu mesa, con el sabor autentico de nuestra tierra chilena."
+  const videoUrl = data?.backgroundVideo
+  const buttons = data?.ctaButtons || [
+    { label: "Ver Productos", href: "#productos", variant: "primary" as const },
+    { label: "Nuestra Historia", href: "#nosotros", variant: "outline" as const },
+  ]
+
+  const bgImage = data?.backgroundImage
+    ? urlFor(data.backgroundImage).url()
+    : "/images/hero-cheese.jpg"
+
   return (
     <section id="inicio" className="relative min-h-screen flex items-center pt-16 md:pt-20">
-      {/* Background Image */}
+      {/* Background */}
       <div className="absolute inset-0 z-0">
-        <Image
-          src="/images/hero-cheese.jpg"
-          alt="Quesos artesanales Don Nelson"
-          fill
-          className="object-cover"
-          priority
-        />
+        {videoUrl ? (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+          >
+            <source src={videoUrl} type="video/mp4" />
+          </video>
+        ) : (
+          <Image
+            src={bgImage}
+            alt="Quesos artesanales Don Nelson"
+            fill
+            className="object-cover"
+            priority
+          />
+        )}
         <div className="absolute inset-0 bg-[oklch(0.28_0.08_295)]/70" />
       </div>
 
@@ -31,31 +78,30 @@ export function Hero() {
             />
           </div>
           <p className="text-accent font-medium tracking-widest uppercase text-sm mb-4">
-            Queseria Artesanal Chilena
+            {tagline}
           </p>
           <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white font-bold leading-tight mb-6 text-balance">
-            Queseria Don Nelson
+            {title}
           </h1>
           <p className="text-white/90 text-lg md:text-xl leading-relaxed mb-8 max-w-xl">
-            Quesos artesanales elaborados con la receta familiar que ha pasado de generacion en generacion.
-            Del campo a tu mesa, con el sabor autentico de nuestra tierra chilena.
+            {description}
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button
-              asChild
-              size="lg"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8"
-            >
-              <Link href="#productos">Ver Productos</Link>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="border-white text-white hover:bg-white/10 text-base px-8 bg-transparent"
-            >
-              <Link href="#nosotros">Nuestra Historia</Link>
-            </Button>
+            {buttons.map((button) => (
+              <Button
+                key={button.label}
+                asChild
+                size="lg"
+                variant={button.variant === "outline" ? "outline" : "default"}
+                className={
+                  button.variant === "primary"
+                    ? "bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8"
+                    : "border-white text-white hover:bg-white/10 text-base px-8 bg-transparent"
+                }
+              >
+                <Link href={button.href}>{button.label}</Link>
+              </Button>
+            ))}
           </div>
         </div>
       </div>

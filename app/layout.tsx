@@ -4,8 +4,8 @@ import { Lora, Playfair_Display } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
-const _lora = Lora({ subsets: ["latin"], variable: "--font-lora" });
-const _playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
+const lora = Lora({ subsets: ["latin"], variable: "--font-lora" });
+const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
 
 export const metadata: Metadata = {
   title: 'Queseria Don Nelson | Quesos Artesanales',
@@ -24,8 +24,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`font-sans antialiased`}>
+    <html lang="es" suppressHydrationWarning className={`${lora.variable} ${playfair.variable}`}>
+      <body className="font-sans antialiased bg-background text-foreground">
         {children}
         <Analytics />
       </body>

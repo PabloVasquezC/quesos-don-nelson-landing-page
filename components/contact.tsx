@@ -1,14 +1,33 @@
 "use client"
 
 import React from "react"
-
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Phone, Mail, MapPin, Instagram, Facebook } from "lucide-react"
+import { client, queries } from "@/lib/sanity"
+import useSWR from "swr"
+
+interface ContactData {
+  title: string
+  description: string
+  phone: string
+  email: string
+  location: string
+  socialLinks?: {
+    instagram: string
+    facebook: string
+  }
+}
+
+const fetcher = (query: string) => client.fetch(query)
 
 export function Contact() {
+  const { data } = useSWR<ContactData>(queries.contact, fetcher, {
+    fallbackData: null,
+  })
+
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -17,11 +36,17 @@ export function Contact() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Create WhatsApp message
     const whatsappMessage = `Hola! Soy ${formData.name}. ${formData.message}`
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(whatsappMessage)}`
     window.open(whatsappUrl, "_blank")
   }
+
+  const title = data?.title || "Haz Tu Pedido"
+  const description = data?.description || "Estamos listos para atenderte. Contactanos para hacer tu pedido o resolver cualquier duda sobre nuestros productos."
+  const email = data?.email || "quesosdonnelson@email.com"
+  const location = data?.location || "Entregas a domicilio disponibles"
+  const instagramUrl = data?.socialLinks?.instagram || "https://www.instagram.com/quesosdonnelson/"
+  const facebookUrl = data?.socialLinks?.facebook || "https://www.facebook.com/quesosdonnelson/"
 
   return (
     <section id="contacto" className="py-20 md:py-32 bg-secondary">
@@ -32,11 +57,10 @@ export function Contact() {
             Contacto
           </p>
           <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground font-bold mb-6 text-balance">
-            Haz Tu Pedido
+            {title}
           </h2>
           <p className="text-muted-foreground text-lg leading-relaxed">
-            Estamos listos para atenderte. Contactanos para hacer tu pedido 
-            o resolver cualquier duda sobre nuestros productos.
+            {description}
           </p>
         </div>
 
@@ -121,7 +145,7 @@ export function Contact() {
                 </div>
                 <div>
                   <p className="font-medium text-foreground">Email</p>
-                  <p className="text-muted-foreground">quesosdonnelson@email.com</p>
+                  <p className="text-muted-foreground">{email}</p>
                 </div>
               </div>
               
@@ -131,7 +155,7 @@ export function Contact() {
                 </div>
                 <div>
                   <p className="font-medium text-foreground">Ubicacion</p>
-                  <p className="text-muted-foreground">Entregas a domicilio disponibles</p>
+                  <p className="text-muted-foreground">{location}</p>
                 </div>
               </div>
             </div>
@@ -141,7 +165,7 @@ export function Contact() {
               <p className="font-medium text-foreground mb-4">Siguenos en Redes</p>
               <div className="flex gap-4">
                 <a 
-                  href="https://www.instagram.com/quesosdonnelson/" 
+                  href={instagramUrl} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-primary-foreground hover:bg-primary/90 transition-colors"
@@ -150,7 +174,7 @@ export function Contact() {
                   <Instagram className="w-5 h-5" />
                 </a>
                 <a 
-                  href="https://www.facebook.com/quesosdonnelson/" 
+                  href={facebookUrl} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-primary-foreground hover:bg-primary/90 transition-colors"

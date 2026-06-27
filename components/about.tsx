@@ -1,6 +1,21 @@
 import Image from "next/image"
+import { client, queries, urlFor } from "@/lib/sanity"
 
-const features = [
+interface Feature {
+  title: string
+  description: string
+}
+
+interface AboutData {
+  sectionLabel: string
+  title: string
+  paragraphs: string[]
+  mainImage?: { asset?: { _ref: string } }
+  videos?: Array<{ title: string; url: string }>
+  features: Feature[]
+}
+
+const fallbackFeatures: Feature[] = [
   {
     title: "Tradicion Familiar",
     description: "Recetas heredadas de generacion en generacion que mantienen vivo el sabor autentico.",
@@ -19,7 +34,27 @@ const features = [
   },
 ]
 
-export function About() {
+export async function About() {
+  let data: AboutData | null = null
+
+  try {
+    data = await client.fetch<AboutData>(queries.about)
+  } catch {
+    // Fallback
+  }
+
+  const sectionLabel = data?.sectionLabel || "Nuestra Historia"
+  const title = data?.title || "Del Campo a Tu Mesa, con Amor y Tradicion"
+  const paragraphs = data?.paragraphs || [
+    "Queseria Don Nelson nacio del amor por las tradiciones de nuestra tierra chilena. Con anos de experiencia y el conocimiento transmitido por generaciones, nos dedicamos a elaborar quesos artesanales que llevan el sabor autentico del campo.",
+    "Cada dia, con las primeras luces del amanecer, comenzamos nuestro trabajo utilizando las mejores tecnicas artesanales para crear productos que honran nuestra herencia culinaria chilena.",
+  ]
+  const features = data?.features?.length ? data.features : fallbackFeatures
+
+  const mainImage = data?.mainImage
+    ? urlFor(data.mainImage).url()
+    : "/images/countryside.jpg"
+
   return (
     <section id="nosotros" className="py-20 md:py-32 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -28,7 +63,7 @@ export function About() {
           <div className="relative">
             <div className="relative aspect-[4/3] rounded-lg overflow-hidden">
               <Image
-                src="/images/countryside.jpg"
+                src={mainImage}
                 alt="Campo y tradicion de Queseria Don Nelson"
                 fill
                 className="object-cover"
@@ -42,21 +77,18 @@ export function About() {
           {/* Content */}
           <div>
             <p className="text-primary font-medium tracking-widest uppercase text-sm mb-4">
-              Nuestra Historia
+              {sectionLabel}
             </p>
             <h2 className="font-serif text-3xl md:text-4xl text-foreground font-bold mb-6 text-balance">
-              Del Campo a Tu Mesa, con Amor y Tradicion
+              {title}
             </h2>
-            <p className="text-muted-foreground text-lg leading-relaxed mb-8">
-              Queseria Don Nelson nacio del amor por las tradiciones de nuestra tierra chilena. 
-              Con anos de experiencia y el conocimiento transmitido por generaciones, 
-              nos dedicamos a elaborar quesos artesanales que llevan el sabor autentico del campo.
-            </p>
-            <p className="text-muted-foreground leading-relaxed mb-10">
-              Cada dia, con las primeras luces del amanecer, comenzamos nuestro trabajo 
-              utilizando las mejores tecnicas artesanales para crear productos que honran 
-              nuestra herencia culinaria chilena.
-            </p>
+            <div className="space-y-4 mb-10">
+              {paragraphs.map((p, i) => (
+                <p key={i} className="text-muted-foreground text-lg leading-relaxed">
+                  {p}
+                </p>
+              ))}
+            </div>
 
             {/* Features */}
             <div className="grid sm:grid-cols-2 gap-6">
