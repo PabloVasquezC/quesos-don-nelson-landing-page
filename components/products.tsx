@@ -1,11 +1,18 @@
 import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
-import { client, queries, urlFor } from "@/lib/sanity"
+import { client, queries, tags, urlFor } from "@/lib/sanity"
 
 interface Product {
   name: string
   description: string
   image?: { asset?: { _ref: string } }
+}
+
+interface ProductsSectionData {
+  sectionLabel: string
+  title: string
+  description: string
+  bottomNote: string
 }
 
 const fallbackProducts = [
@@ -30,14 +37,22 @@ const fallbackImages = ["/images/queso-fresco.jpg", "/images/artisan-production.
 
 export async function Products() {
   let products: Product[] = []
+  let sectionData: ProductsSectionData | null = null
 
   try {
-    products = await client.fetch<Product[]>(queries.products)
+    ;[products, sectionData] = await Promise.all([
+      client.fetch<Product[]>(queries.products, {}, { next: { tags: [tags.products] } }),
+      client.fetch<ProductsSectionData>(queries.productsSection, {}, { next: { tags: [tags.productsSection] } }),
+    ])
   } catch {
     // Fallback
   }
 
   const displayProducts = products.length > 0 ? products : fallbackProducts
+  const sectionLabel = sectionData?.sectionLabel || "Nuestros Productos"
+  const title = sectionData?.title || "Quesos con Sabor a Tradicion"
+  const description = sectionData?.description || "Cada queso es elaborado a mano con leche fresca de nuestra region, siguiendo tecnicas artesanales que garantizan la mejor calidad."
+  const bottomNote = sectionData?.bottomNote || "Todos nuestros productos son elaborados diariamente para garantizar frescura y calidad."
 
   return (
     <section id="productos" className="py-20 md:py-32 bg-secondary">
@@ -45,14 +60,13 @@ export async function Products() {
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
           <p className="text-primary font-medium tracking-widest uppercase text-sm mb-4">
-            Nuestros Productos
+            {sectionLabel}
           </p>
           <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground font-bold mb-6 text-balance">
-            Quesos con Sabor a Tradicion
+            {title}
           </h2>
           <p className="text-muted-foreground text-lg leading-relaxed">
-            Cada queso es elaborado a mano con leche fresca de nuestra region, 
-            siguiendo tecnicas artesanales que garantizan la mejor calidad.
+            {description}
           </p>
         </div>
 
@@ -92,7 +106,7 @@ export async function Products() {
         {/* Additional Info */}
         <div className="mt-16 text-center">
           <p className="text-muted-foreground italic">
-            Todos nuestros productos son elaborados diariamente para garantizar frescura y calidad.
+            {bottomNote}
           </p>
         </div>
       </div>

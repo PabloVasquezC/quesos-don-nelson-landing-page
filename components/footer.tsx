@@ -2,7 +2,8 @@ import React from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Instagram, Facebook } from "lucide-react"
-import { client, queries } from "@/lib/sanity"
+import { client, queries, tags, urlFor } from "@/lib/sanity"
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types"
 
 interface FooterData {
   quote: string
@@ -12,6 +13,7 @@ interface FooterData {
 interface SiteSettingsData {
   brandName: string
   tagline: string
+  logo?: SanityImageSource | null
   socialLinks?: {
     instagram: string
     facebook: string
@@ -26,8 +28,8 @@ export async function Footer() {
 
   try {
     ;[footerData, settingsData] = await Promise.all([
-      client.fetch<FooterData>(queries.footer),
-      client.fetch<SiteSettingsData>(queries.siteSettings),
+      client.fetch<FooterData>(queries.footer, {}, { next: { tags: [tags.footer] } }),
+      client.fetch<SiteSettingsData>(queries.siteSettings, {}, { next: { tags: [tags.siteSettings] } }),
     ])
   } catch {
     // Fallback
@@ -35,6 +37,7 @@ export async function Footer() {
 
   const brandName = settingsData?.brandName || "Don Nelson"
   const tagline = settingsData?.tagline || "Queseria Artesanal"
+  const logo = settingsData?.logo || null
   const quote = footerData?.quote || "Quesos artesanales elaborados con tradicion y pasion. Del campo a tu mesa con el mejor sabor chileno."
   const navLinks = footerData?.navLinks || [
     { label: "Inicio", href: "#inicio" },
@@ -55,7 +58,7 @@ export async function Footer() {
           <div>
             <div className="flex items-center gap-3 mb-4">
               <Image
-                src="/images/logo.jpg"
+                src={logo ? urlFor(logo).url() : "/images/logo.jpg"}
                 alt={`Queseria ${brandName}`}
                 width={60}
                 height={60}

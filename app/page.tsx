@@ -2,10 +2,11 @@ import { Header } from "@/components/header"
 import { Hero } from "@/components/hero"
 import { Products } from "@/components/products"
 import { About } from "@/components/about"
+import { History } from "@/components/history"
 import { Contact } from "@/components/contact"
 import { Footer } from "@/components/footer"
 import { FadeIn } from "@/components/animations/fade-in"
-import { N8nChat } from "@/components/N8n"
+import { N8nChatWrapper } from "@/components/n8n-wrapper"
 
 export default function Home() {
   return (
@@ -25,10 +26,13 @@ export default function Home() {
         </FadeIn>
 
         <FadeIn direction="up" duration={0.8}>
+          <History />
+        </FadeIn>
+
+        <FadeIn direction="up" duration={0.8}>
           <Contact />
         </FadeIn>
-        <N8nChat />
-
+        <N8nChatWrapper />
       </main>
       <Footer />
     </>

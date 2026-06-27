@@ -1,35 +1,38 @@
 "use client"
 import { useEffect } from "react"
-import "@n8n/chat/style.css";
+import "@n8n/chat/style.css"
 
+interface N8nChatProps {
+  webhookUrl: string
+  title: string
+  footer: string
+  welcomeMessage: string
+}
 
-export function N8nChat() {
+export function N8nChat({ webhookUrl, title, footer, welcomeMessage }: N8nChatProps) {
   useEffect(() => {
     import("@n8n/chat").then(({ createChat }) => {
       createChat({
-        webhookUrl:
-          "https://n8n.fluxia.cl/webhook/15a48a2f-3f5b-4f73-8378-75f8cd4f6a2e/chat",
+        webhookUrl,
         mode: "window",
         chatInputKey: "chatInput",
         chatSessionKey: "sessionId",
         loadPreviousSession: true,
         showWelcomeScreen: false,
-        initialMessages: [
-          "👋 Hola! Soy el asistente virtual de Quesos Don Nelson y estoy aqui para ayudarte."
-        ],
+        initialMessages: [welcomeMessage],
         i18n: {
           en: {
-            title: "Quesos Don Nelson",
+            title,
             subtitle: "Asistencia Virtual",
             inputPlaceholder: "Escribe aqui..",
-            footer: "Quesos Don Nelson",
+            footer,
             getStarted: "Comenzar",
             closeButtonTooltip: "Cerrar",
           },
         },
-      });
-    });
-  }, []);
+      })
+    })
+  }, [webhookUrl, title, footer, welcomeMessage])
 
-  return null;
+  return null
 }

@@ -23,6 +23,12 @@ export const contact = defineType({
       type: 'string',
     }),
     defineField({
+      name: 'whatsappNumber',
+      title: 'Número de WhatsApp',
+      type: 'string',
+      description: 'Formato: 549XXXXXXXXX (sin espacios ni guiones)',
+    }),
+    defineField({
       name: 'email',
       title: 'Email',
       type: 'string',

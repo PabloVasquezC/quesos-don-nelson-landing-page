@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { client, queries, urlFor } from "@/lib/sanity"
+import { client, queries, tags, urlFor } from "@/lib/sanity"
 
 interface HeroData {
   tagline: string
@@ -16,27 +16,39 @@ interface HeroData {
   }>
 }
 
+interface SiteSettingsData {
+  logo?: { asset?: { _ref: string } }
+}
+
 export async function Hero() {
-  let data: HeroData | null = null
+  let heroData: HeroData | null = null
+  let settingsData: SiteSettingsData | null = null
 
   try {
-    data = await client.fetch<HeroData>(queries.hero)
+    ;[heroData, settingsData] = await Promise.all([
+      client.fetch<HeroData>(queries.hero, {}, { next: { tags: [tags.hero] } }),
+      client.fetch<SiteSettingsData>(queries.siteSettings, {}, { next: { tags: [tags.siteSettings] } }),
+    ])
   } catch {
     // Fallback a datos hardcodeados
   }
 
-  const tagline = data?.tagline || "Queseria Artesanal Chilena"
-  const title = data?.title || "Queseria Don Nelson"
-  const description = data?.description || "Quesos artesanales elaborados con la receta familiar que ha pasado de generacion en generacion. Del campo a tu mesa, con el sabor autentico de nuestra tierra chilena."
-  const videoUrl = data?.backgroundVideo
-  const buttons = data?.ctaButtons || [
+  const tagline = heroData?.tagline || "Queseria Artesanal Chilena"
+  const title = heroData?.title || "Queseria Don Nelson"
+  const description = heroData?.description || "Quesos artesanales elaborados con la receta familiar que ha pasado de generacion en generacion. Del campo a tu mesa, con el sabor autentico de nuestra tierra chilena."
+  const videoUrl = heroData?.backgroundVideo
+  const buttons = heroData?.ctaButtons || [
     { label: "Ver Productos", href: "#productos", variant: "primary" as const },
     { label: "Nuestra Historia", href: "#nosotros", variant: "outline" as const },
   ]
 
-  const bgImage = data?.backgroundImage
-    ? urlFor(data.backgroundImage).url()
+  const bgImage = heroData?.backgroundImage
+    ? urlFor(heroData.backgroundImage).url()
     : "/images/hero-cheese.jpg"
+
+  const logoSrc = settingsData?.logo
+    ? urlFor(settingsData.logo).url()
+    : "/images/logo.jpg"
 
   return (
     <section id="inicio" className="relative min-h-screen flex items-center pt-16 md:pt-20">
@@ -70,8 +82,8 @@ export async function Hero() {
           {/* Logo in Hero */}
           <div className="mb-8">
             <Image
-              src="/images/logo.jpg"
-              alt="Queseria Don Nelson Logo"
+              src={logoSrc}
+              alt={`Quesería ${title}`}
               width={180}
               height={180}
               className="w-32 h-32 md:w-44 md:h-44 object-contain rounded-lg shadow-2xl"

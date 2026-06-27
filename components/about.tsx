@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { client, queries, urlFor } from "@/lib/sanity"
+import { client, queries, tags, urlFor } from "@/lib/sanity"
 
 interface Feature {
   title: string
@@ -38,7 +38,7 @@ export async function About() {
   let data: AboutData | null = null
 
   try {
-    data = await client.fetch<AboutData>(queries.about)
+    data = await client.fetch<AboutData>(queries.about, {}, { next: { tags: [tags.about] } })
   } catch {
     // Fallback
   }
@@ -69,6 +69,22 @@ export async function About() {
                 className="object-cover"
               />
             </div>
+            {/* Videos */}
+            {data?.videos && data.videos.length > 0 && (
+              <div className="grid grid-cols-2 gap-4 mt-4">
+                {data.videos.map((video) => (
+                  <div key={video.title} className="aspect-video rounded-lg overflow-hidden border border-border">
+                    <iframe
+                      src={video.url}
+                      title={video.title}
+                      className="w-full h-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
             {/* Decorative element */}
             <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-primary/10 rounded-lg -z-10 hidden md:block" />
             <div className="absolute -top-6 -left-6 w-24 h-24 bg-accent/10 rounded-lg -z-10 hidden md:block" />

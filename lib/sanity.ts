@@ -19,9 +19,22 @@ export function urlFor(source: SanityImageSource) {
 export const queries = {
   siteSettings: `*[_type == "siteSettings"][0]`,
   hero: `*[_type == "hero"][0]`,
+  productsSection: `*[_type == "productsSection"][0]`,
   products: `*[_type == "product"] | order(order asc)`,
   about: `*[_type == "about"][0]`,
   history: `*[_type == "history"][0]`,
   contact: `*[_type == "contact"][0]`,
   footer: `*[_type == "footer"][0]`,
+}
+
+// Tags for revalidation
+export const tags = {
+  siteSettings: 'siteSettings',
+  hero: 'hero',
+  productsSection: 'productsSection',
+  products: 'product',
+  about: 'about',
+  history: 'history',
+  contact: 'contact',
+  footer: 'footer',
 }

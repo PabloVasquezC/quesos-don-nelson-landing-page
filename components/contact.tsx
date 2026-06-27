@@ -13,11 +13,13 @@ interface ContactData {
   title: string
   description: string
   phone: string
+  whatsappNumber: string
   email: string
   location: string
   socialLinks?: {
     instagram: string
     facebook: string
+    whatsapp: string
   }
 }
 
@@ -37,12 +39,16 @@ export function Contact() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     const whatsappMessage = `Hola! Soy ${formData.name}. ${formData.message}`
-    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(whatsappMessage)}`
+    const phone = data?.whatsappNumber
+    const whatsappUrl = phone
+      ? `https://wa.me/${phone}?text=${encodeURIComponent(whatsappMessage)}`
+      : `https://wa.me/?text=${encodeURIComponent(whatsappMessage)}`
     window.open(whatsappUrl, "_blank")
   }
 
   const title = data?.title || "Haz Tu Pedido"
   const description = data?.description || "Estamos listos para atenderte. Contactanos para hacer tu pedido o resolver cualquier duda sobre nuestros productos."
+  const phone = data?.phone || ""
   const email = data?.email || "quesosdonnelson@email.com"
   const location = data?.location || "Entregas a domicilio disponibles"
   const instagramUrl = data?.socialLinks?.instagram || "https://www.instagram.com/quesosdonnelson/"
@@ -129,15 +135,17 @@ export function Contact() {
             </h3>
             
             <div className="flex flex-col gap-6 mb-10">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                  <Phone className="w-5 h-5 text-primary" />
+              {phone && (
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                    <Phone className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-foreground">Telefono</p>
+                    <p className="text-muted-foreground">{phone}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-medium text-foreground">Telefono</p>
-                  <p className="text-muted-foreground">Contactanos por WhatsApp</p>
-                </div>
-              </div>
+              )}
               
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
