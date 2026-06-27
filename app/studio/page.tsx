@@ -1,8 +1,18 @@
 'use client'
 
-import { NextStudio } from 'next-sanity/studio'
-import config from '../../sanity/sanity.config'
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function StudioPage() {
-  return <NextStudio config={config} />
+  const router = useRouter()
+
+  useEffect(() => {
+    router.replace('/studio/structure')
+  }, [router])
+
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <p className="text-muted-foreground">Redirigiendo al Studio...</p>
+    </div>
+  )
 }
