@@ -1,11 +1,9 @@
+import {NextStudioLayout} from 'next-sanity/studio'
+
 export default function StudioLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  return (
-    <html lang="es">
-      <body>{children}</body>
-    </html>
-  )
+  return <NextStudioLayout>{children}</NextStudioLayout>
 }
